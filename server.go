@@ -9,6 +9,7 @@ import (
 func main() {
 	http.HandleFunc("/hello-world", handleHelloWorld)
 	http.HandleFunc("/health", handleHealth)
+	http.HandleFunc("/new-response", handleNewResponse)
 
 	addr := "localhost:8000"
 	log.Printf("Listening on %s ....", addr)
@@ -40,6 +41,11 @@ func writeResponse(writer http.ResponseWriter, responseString string) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
 
-
+func handleNewResponse(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != "GET" {
+		http.Error(writer, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+	}
+    writeResponse(writer, "New Response Page")
 }
